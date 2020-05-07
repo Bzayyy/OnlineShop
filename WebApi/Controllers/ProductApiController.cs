@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OnlineShopEdmx;
 using OnlineShopEdmx.Model;
 using OnlineShopping.Repository;
@@ -62,6 +63,41 @@ namespace WebApi.Controllers
             return CreatedAtRoute("GetProduct", new { id = item.ProductId }, item);
         }
 
+
+        // PUT: api/TodoItems/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutTodoItem(int id, ProductDetail todoItem)
+        {
+            eCommerceEntities _context = new eCommerceEntities();
+
+            if (id != todoItem.ProductId)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(todoItem).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TodoItemExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -92,5 +128,11 @@ namespace WebApi.Controllers
             return productItems;
         }
 
+        private bool TodoItemExists(int id)
+        {
+            eCommerceEntities _context = new eCommerceEntities();
+
+            return _context.Product.Any(e => e.ProductId == id);
+        }
     }
 }
