@@ -16,18 +16,18 @@ namespace WebApi.Controllers
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductApiController : ControllerBase
+    public class CategoryApiController : ControllerBase
     {
         public GenericUnitOfWork _unitOfWork = new GenericUnitOfWork();
         private Populator populator = new Populator();
        
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDetail>>> Get()
+        public async Task<ActionResult<IEnumerable<CategoryDetail>>> Get()
         {
 
-            var result = await Task.FromResult(new ProductViewModelLst
+            var result = await Task.FromResult(new CategoryViewModelLst
             {
-                dbModelLst = _unitOfWork.GetRepositoryInstance<ProductDetail>().GetAllRecordsIQueryable().Where(i => i.IsDelete == false).ToList()
+                dbModelLst = _unitOfWork.GetRepositoryInstance<CategoryDetail>().GetAllRecordsIQueryable().Where(i => i.IsDelete == false).ToList()
             }) ;
             return result.dbModelLst.ToList();
 
@@ -56,22 +56,23 @@ namespace WebApi.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<ProductDetail> Create(ProductDetail item)
+        public ActionResult<CategoryDetail> Create(CategoryDetail item)
         {
-            _unitOfWork.GetRepositoryInstance<ProductDetail>().Add(item);
+            _unitOfWork.GetRepositoryInstance<CategoryDetail>().Add(item);
 
-            return CreatedAtRoute("GetProduct", new { id = item.ProductId }, item);
+            return CreatedAtRoute("GetProduct", new { id = item.CategoryId}, item);
         }
 
 
         // PUT: api/TodoItems/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTodoItem(int id, ProductDetail todoItem)
+        public async Task<IActionResult> PutTodoItem(int id, CategoryDetail todoItem)
         {
             eCommerceEntities _context = new eCommerceEntities();
 
-            if (id != todoItem.ProductId)
+            if (id != todoItem.CategoryId)
             {
                 return BadRequest();
             }
@@ -117,9 +118,9 @@ namespace WebApi.Controllers
 
         // GET: api/ProductItem/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductDetail>> GetProduct(int id)
+        public async Task<ActionResult<CategoryDetail>> GetProduct(int id)
         {
-            var productItems = _unitOfWork.GetRepositoryInstance<ProductDetail>().GetFirstorDefault(id);
+            var productItems = _unitOfWork.GetRepositoryInstance<CategoryDetail>().GetFirstorDefault(id);
             if (productItems == null)
             {
                 return NotFound();
@@ -131,7 +132,7 @@ namespace WebApi.Controllers
         {
             eCommerceEntities _context = new eCommerceEntities();
 
-            return _context.Product.Any(e => e.ProductId == id);
+            return _context.Category.Any(e => e.CategoryId == id);
         }
     }
 }
