@@ -24,7 +24,7 @@ namespace OnlineShopEdmx.Model
         [Required(ErrorMessage = "Description is Required")]
         public  string Description { get; set; }
         public string ProductImage { get; set; }
-        public Nullable<bool> IsFeatured { get; set; }
+        public int ProductFeatureId { get; set; }
         [Required]
         [Range(typeof(int), "1", "500", ErrorMessage = "Invalid Quantity")]
         public Nullable<int> Quantity { get; set; }

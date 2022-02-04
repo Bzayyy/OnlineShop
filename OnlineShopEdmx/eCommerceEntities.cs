@@ -13,7 +13,7 @@ namespace OnlineShopEdmx
         public DbSet<ShippingDetail> Shipping { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=DESKTOP-GR28DUC;Database=OnlineShopping;Trusted_Connection=True;MultipleActiveResultSets=true");
+            optionsBuilder.UseSqlServer(@"Server=Bijay;Database=OnlineShopping;Trusted_Connection=True;MultipleActiveResultSets=true");
         }
 
     }
